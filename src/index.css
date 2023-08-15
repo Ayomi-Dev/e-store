@@ -1,13 +1,92 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+
+
+
+
+
+nav ul{
+    width: 80%;
+}
+nav ul li{
+    transition: all .5s ease-in-out;
+}
+nav ul li:hover{
+    transform: scale(1.05) translateX(30px);
+}
+nav ul li:hover i, nav ul li.active h3{
+    color: #ff007f;
+}
+.topNav{
+    width: 75%;
+}
+.hero{
+    width: 80%;
+}
+header{
+    height: 420px;
+}
+aside{
+    width: 25%;
+}
+.trend-container{
+    max-width: 80%;
+}
+.more{
+    max-width: 300px;
+}
+.balance-history{
+    width: 15%;
+}
+img{
+    height: 100%;
+    object-fit: cover;
+}
+aside::-webkit-scrollbar, .trend-container::-webkit-scrollbar{
+    display: none;
+}
+button{
+    background: #ff007f;
+    padding: 2px 8px;
+    border-radius: 5px;
+    color: white;
+    margin-top: 15px;
+    opacity: .8;
+    transition:  .3s;
+}
+button:hover{
+    opacity: 1;
+}
+.image:hover .hover-img{
+   opacity: 1;
+
+}
+.trend-container i{
+    transition: transform .3s, color .3s;
+}
+.trend-container i:hover{
+    transform: scale(1.1);
+    color: #ff91ac;
+}
+table{
+    width: 75%;
+}
+table td{
+    text-align: center;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+i{
+    cursor: pointer;
+    transition: .3s;
+}
+.page{
+    width: 75%;
+    float: right;
+    margin-top: 3rem;
+
 }
