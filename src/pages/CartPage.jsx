@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux';
-import { decreaseQty, increaseQty, removeItems } from '../redux/cart';
+import { chooseSize, decreaseQty, increaseQty, removeItems, initCartFromLocalStorage} from '../redux/cart';
+import { Link } from 'react-router-dom';
+import { Contexts } from '../context/ProductContext';
 
 
 
 const CartPage = () => {
 
   const { cartItems, totalQty, totalPrice } = useSelector(state => state.cart)
+
+  const { sizes } = useContext(Contexts);
   
   const dispatch = useDispatch();
 
@@ -23,10 +27,14 @@ const CartPage = () => {
     dispatch(removeItems(product))
   }
 
-  return (
-    <section className="page relative">
+  const handleSize = (size) => {
+    dispatch(chooseSize(size))
+  }
 
-      {cartItems.length != 0 ? (<h2 className='text-lg text-gray-400 text-center'>Your items are here</h2>) : 
+  return (
+    <section className="page  relative">
+
+      {cartItems.length != 0 ? (<h2 className=' text-gray-600 text-center my-5 text-xl'>Your items are here</h2>) : 
       (<div className='absolute top-3/4 left-1/4 '>
 
         <h2 className='text-lg text-gray-400 text-center'> Cart is empty</h2>
@@ -35,31 +43,34 @@ const CartPage = () => {
         
       </div>)}
       
-      <div className="w-full flex">
+      <div className="w-full flex flex-col md:flex-row">
 
-        <table className='mx-auto'>
-          <thead>
+        <table className='mx-auto px-2'>
+          <thead >
 
-          <tr className=' shadow-md '>
-          <th>
+            <tr className='shadow-md h-16 mb-4 '>
+              <th>
             <h1>Image</h1>
-          </th>
-          <th>
-            <h1>Name</h1>
-          </th>
-          <th>
+              </th>
+              <th>
+            <h1>Desc.</h1>
+              </th>
+              <th>
+            <h1>Size</h1>
+              </th>
+              <th>
             <h1>Price</h1>
-          </th>
-          <th>
-            <h1>Quantity</h1>
-          </th>
-          <th>
+              </th>
+              <th>
+            <h1>Qty</h1>
+              </th>
+              <th>
             <h1>Total</h1>
-          </th>
-          <th>
+              </th>
+              <th>
             <h1 className='text-red-500'>Action</h1>
-          </th>
-          </tr>
+              </th>
+            </tr>
 
           </thead>
 
@@ -68,28 +79,44 @@ const CartPage = () => {
           {cartItems && cartItems.map((product, index) => {
             return(
 
-            <tr className='p-0 shadow-md' key={index}>
+            <tr className='shadow-md bg-white border-b-black border-2 h-16 md:h-24' key={index}>
 
-              <td className="w-10">
-                <img src={ product.img1 } className='w-full rounded-full'/>
+              <td>
+
+                <Link to={`/details/${product.id}`}>
+                  <img src={ product.img1 } className='w-8 h-8 md:w-12 md:h-12 ml-2 rounded-full'/>
+                </Link>
+                
               </td>
 
-              <td>{product.name}</td>
+              <td className='font-bold'>{product.name}</td>
 
-              <td>{product.price}</td>
+              <td>
+                <select name="" id="">
+                  <option value="">{ product.size }</option>
+
+                  { sizes.map((size, index) => {
+                    return(
+                      <option key={index} onClick={() => handleSize(size)} value={size}> {size} </option>
+                    )
+                  })}
+                </select>
+              </td>
+
+              <td className='font-bold'>{product.price}</td>
 
               <td className=''>
                 <div className="flex justify-center  items-center">
-              <i className="fa fa-circle-minus" onClick={() => handleDecrease(product)}></i>
-              <span className='mx-3'>{product.quantity}</span>
-              <i className="fa fa-circle-plus" onClick={() => handleIncrease(product)}></i>
+                  <i className="fa fa-circle-minus" onClick={() => handleDecrease(product)}></i>
+                  <span className='mx-3'>{product.quantity}</span>
+                  <i className="fa fa-circle-plus" onClick={() => handleIncrease(product)}></i>
                 </div>
               </td>
 
-              <td>{product.total}</td>
+              <td className='font-bold'>{product.total}</td>
 
               <td>
-            <button className="bg-red-500" onClick={() => handleRemove(product)}>Remove</button>
+                <i className="fa fa-trash bg-red-500 m-0" onClick={() => handleRemove(product)}></i>
               </td>
             </tr>
             )
@@ -102,10 +129,10 @@ const CartPage = () => {
           </tbody>
         </table>
 
-        <div className="w-1/4 mx-2 rounded shadow-md bg-white-400 h-44">
+        <div className="w-1/2 md:w-1/4 mx-auto md:mx-2 rounded mt-4 shadow-md bg-white h-44">
           <h1 className='text-center font-bold mt-3'>Subtotal</h1>
-          <h2 className='font-bold mx-3 text-gray-600 mt-2'>Total items: { totalQty }</h2>
-          <h2 className='font-bold mx-3 text-gray-600'>Total Price: ${ totalPrice }</h2>
+          <h2 className='font-bold mx-3 text-gray-600 mt-2'>Total items: <span className='font-bold'>{ totalQty }</span></h2>
+          <h2 className='font-bold mx-3 text-gray-600'>Total Price: <span className='font-bold'>${ totalPrice }</span> </h2>
 
           <div className="text-center ">
             <button className='bg-green-700 text-sm py-1 mt-4'>Checkout</button>
